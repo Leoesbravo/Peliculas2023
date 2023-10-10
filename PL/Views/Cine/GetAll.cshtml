@@ -1,9 +1,75 @@
-﻿
+﻿@model ML.CIne
 @{
     ViewData["Title"] = "GetAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
 
-<h1>GetAll</h1>
+<h1>Cines</h1>
+<div class="row">
+    <div class="col-auto ms-auto">
+        <a class="btn btn-success" href="@Url.Action("Form", "Cine")">Añadir</a>
+    </div>
+</div>
 
-<a class="btn btn-success" href="@Url.Action("Form", "Cine")">Añadir</a>
+@if (Model.Cines.Count > 0)
+{
+    <table class="table table-dark table-hover table-striped " id="myTable">
+        <thead>
+            <tr class="table-secondary">
+                <th class="text-center">Editar</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Zona</th>
+                <th>Ventas</th>
+                <th class="text-center">Eliminar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ML.CIne usuario in Model.Cines)
+            {
+                <tr>
+                    <td class="text-center"><a class="btn btn-warning" href="@Url.Action("Form", "Cine", new {IdCine = usuario.IdCine})"><i class="fa-solid fa-pencil"></i></a></td>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Direccion</td>
+                    @switch (usuario.Zona.Nombre)
+                    {
+                        case "Norte":
+                            <td style="font-weight:bold; color: #18D071"> @usuario.Zona.Nombre</td>
+                            break;
+                        case "Sur":
+                            <td style="font-weight: bold; color: #75B5F5"> @usuario.Zona.Nombre</td>
+                            break;
+                        case "Este":
+                            <td style="font-weight: bold; color: #136886"> @usuario.Zona.Nombre</td>
+                            break;
+                        case "Oeste":
+                            <td style="font-weight: bold; color: #8943A2"> @usuario.Zona.Nombre</td>
+                            break;
+                    }
+                    <td>@usuario.Ventas</td>
+                    <td class="text-center"> <a class="btn btn-danger" href="@Url.Action("Delete", "Usuario" ,new {IdCine = usuario.IdCine})"><i class="fa-solid fa-trash-can" style="color:white;"></i></a>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        No existen registros en la tabla :(
+    </div>
+}
+<script type="text/javascript">
+    let table = new DataTable('#myTable', {
+        reponsive: true,
+        "lengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "Todos"]],
+        searching: false,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json",
+        },
+    });
+</script>

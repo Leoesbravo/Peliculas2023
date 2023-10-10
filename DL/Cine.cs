@@ -10,6 +10,7 @@ public partial class Cine
     public string? Nombre { get; set; }
 
     public string? Direccion { get; set; }
+    public string? ZonaNombre { get; set; }
 
     public int? IdZona { get; set; }
 
